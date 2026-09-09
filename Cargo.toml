@@ -1,0 +1,28 @@
+[workspace]
+members = [
+  "crates/strata-core",
+  "crates/strata-vscode",
+  "crates/strata-protocol",
+  "crates/strata-cli",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.7"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/example/strata"
+
+[workspace.dependencies]
+anyhow = "1.0"
+blake3 = "1.8"
+clap = { version = "4.5", features = ["derive"] }
+directories = "6.0"
+fs2 = "0.4"
+jsonc-parser = { version = "0.33", features = ["cst", "serde", "preserve_order"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+thiserror = "2.0"
+tokio = { version = "1.47", features = ["io-std", "io-util", "macros", "rt-multi-thread", "signal"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }

@@ -1,0 +1,15 @@
+[package]
+name = "strata-vscode"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+directories.workspace = true
+strata-core = { path = "../strata-core" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+jsonc-parser.workspace = true
+tempfile = "3.21"

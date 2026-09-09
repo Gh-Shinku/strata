@@ -1,0 +1,67 @@
+{
+  "name": "strata",
+  "displayName": "Strata",
+  "description": "Declarative Base + Profile configuration inheritance for VS Code Profiles",
+  "version": "0.1.7",
+  "publisher": "strata",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/Gh-Shinku/strata.git" },
+  "bugs": { "url": "https://github.com/Gh-Shinku/strata/issues" },
+  "homepage": "https://github.com/Gh-Shinku/strata#readme",
+  "engines": { "vscode": "^1.100.0" },
+  "categories": ["Other"],
+  "keywords": ["profiles", "settings", "configuration", "inheritance", "vscode-profiles"],
+  "icon": "resources/strata.png",
+  "galleryBanner": { "color": "#17134D", "theme": "dark" },
+  "extensionKind": ["ui"],
+  "main": "./dist/extension.js",
+  "activationEvents": ["onStartupFinished", "onCommand:strata.build", "onCommand:strata.preview", "onCommand:strata.open", "onCommand:strata.crud"],
+  "files": ["dist", "bin", "resources", "LICENSE"],
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "check": "tsc --noEmit",
+    "stage-helper": "node stage-helper.mjs",
+    "package": "pnpm build && pnpm stage-helper && vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1",
+    "vscode-jsonrpc": "^8.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/vscode": "^1.100.0",
+    "@vscode/vsce": "^3.6.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.9.0"
+  },
+  "contributes": {
+    "commands": [
+      { "command": "strata.build", "title": "Strata: Build" },
+      { "command": "strata.preview", "title": "Strata: Build Preview" },
+      { "command": "strata.open", "title": "Strata: Open Configuration" },
+      { "command": "strata.crud", "title": "Strata: CRUD" },
+      { "command": "strata.export", "title": "Strata: Export" },
+      { "command": "strata.import", "title": "Strata: Import" },
+      { "command": "strata.doctor", "title": "Strata: Doctor" }
+    ],
+    "configuration": {
+      "title": "Strata",
+      "properties": {
+        "strata.helperPath": { "type": "string", "default": "", "description": "Development override for the native helper path." },
+        "strata.home": { "type": "string", "default": "", "description": "Optional Strata source/state directory override." },
+        "strata.userDataDir": { "type": "string", "default": "", "description": "Optional VS Code user-data directory override for testing." }
+      }
+    },
+    "jsonValidation": [{ "fileMatch": ["profiles.jsonc"], "url": "./dist/strata.schema.json" }],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "strata.crud",
+          "when": "resourceFilename == settings.json && editorHasSelection",
+          "group": "navigation@10"
+        }
+      ]
+    }
+  }
+}

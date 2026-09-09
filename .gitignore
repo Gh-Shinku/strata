@@ -1,0 +1,6 @@
+/target/
+/extension/node_modules/
+/extension/dist/
+*.vsix
+.DS_Store
+*.exe

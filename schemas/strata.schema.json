@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strata.dev/schemas/v1/strata.schema.json",
+  "title": "Strata source",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "base", "profiles"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "const": 1 },
+    "base": { "$ref": "#/$defs/settings" },
+    "profiles": {
+      "type": "object",
+      "propertyNames": { "minLength": 1 },
+      "additionalProperties": { "$ref": "#/$defs/delta" }
+    }
+  },
+  "$defs": {
+    "settingValue": { "type": ["string", "number", "boolean", "array", "object", "null"] },
+    "settings": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/settingValue" }
+    },
+    "delta": {
+      "type": "object",
+      "properties": {
+        "uninherit": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      },
+      "additionalProperties": { "$ref": "#/$defs/settingValue" }
+    }
+  }
+}
