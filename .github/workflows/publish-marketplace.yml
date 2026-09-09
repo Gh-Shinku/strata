@@ -1,0 +1,54 @@
+name: Publish Marketplace
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish-win32-x64:
+    name: Publish win32-x64
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: extension/pnpm-lock.yaml
+      - name: Validate release tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        working-directory: extension
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          if ("v$version" -ne "${{ github.ref_name }}") {
+            throw "Tag ${{ github.ref_name }} does not match extension version $version."
+          }
+      - run: pnpm install --frozen-lockfile
+        working-directory: extension
+      - run: cargo test --workspace
+      - run: pnpm check
+        working-directory: extension
+      - run: pnpm build
+        working-directory: extension
+      - run: node stage-helper.mjs
+        working-directory: extension
+      - name: Package platform extension
+        shell: pwsh
+        working-directory: extension
+        run: node .\node_modules\@vscode\vsce\vsce package --no-dependencies --target win32-x64 --out strata-win32-x64.vsix
+      - name: Publish to VS Code Marketplace
+        shell: pwsh
+        working-directory: extension
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: node .\node_modules\@vscode\vsce\vsce publish --packagePath strata-win32-x64.vsix
