@@ -1,6 +1,6 @@
 {
-  "name": "strata",
-  "displayName": "Strata",
+  "name": "strata-vscode",
+  "displayName": "strata-vscode",
   "description": "Declarative Base + Profile configuration inheritance for VS Code Profiles",
   "version": "0.0.1",
   "publisher": "shinku",

@@ -50,10 +50,10 @@ jobs:
       - name: Package platform extension
         shell: pwsh
         working-directory: extension
-        run: node .\node_modules\@vscode\vsce\vsce package --no-dependencies --target win32-x64 --out strata-win32-x64.vsix
+        run: node .\node_modules\@vscode\vsce\vsce package --no-dependencies --target win32-x64 --out strata-vscode-win32-x64.vsix
       - name: Publish to VS Code Marketplace
         shell: pwsh
         working-directory: extension
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: node .\node_modules\@vscode\vsce\vsce publish --packagePath strata-win32-x64.vsix
+        run: node .\node_modules\@vscode\vsce\vsce publish --packagePath strata-vscode-win32-x64.vsix
