@@ -620,7 +620,7 @@ checksum = "b9be42f50aa861c555654aa3a37f52f4b1074bacf4e48fe0ef7fa584e80f1f0f"
 
 [[package]]
 name = "strata-cli"
-version = "0.1.7"
+version = "0.0.1"
 dependencies = [
  "anyhow",
  "clap",
@@ -637,7 +637,7 @@ dependencies = [
 
 [[package]]
 name = "strata-core"
-version = "0.1.7"
+version = "0.0.1"
 dependencies = [
  "blake3",
  "jsonc-parser",
@@ -649,7 +649,7 @@ dependencies = [
 
 [[package]]
 name = "strata-protocol"
-version = "0.1.7"
+version = "0.0.1"
 dependencies = [
  "serde",
  "serde_json",
@@ -658,7 +658,7 @@ dependencies = [
 
 [[package]]
 name = "strata-vscode"
-version = "0.1.7"
+version = "0.0.1"
 dependencies = [
  "anyhow",
  "directories",

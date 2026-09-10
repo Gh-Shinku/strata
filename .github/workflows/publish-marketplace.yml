@@ -24,15 +24,20 @@ jobs:
           node-version: 22
           cache: pnpm
           cache-dependency-path: extension/pnpm-lock.yaml
-      - name: Validate release tag
+      - name: Inject release version
         if: startsWith(github.ref, 'refs/tags/v')
         shell: pwsh
         working-directory: extension
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
-          if ("v$version" -ne "${{ github.ref_name }}") {
-            throw "Tag ${{ github.ref_name }} does not match extension version $version."
+          $version = $env:RELEASE_TAG.Substring(1)
+          if ($version -notmatch '^\d+\.\d+\.\d+$') {
+            throw "Release tag '$env:RELEASE_TAG' must be v<major>.<minor>.<patch>."
           }
+          $manifest = Get-Content package.json -Raw | ConvertFrom-Json
+          $manifest.version = $version
+          $manifest | ConvertTo-Json -Depth 100 | Set-Content package.json -Encoding utf8NoBOM
       - run: pnpm install --frozen-lockfile
         working-directory: extension
       - run: cargo test --workspace
